@@ -4,6 +4,9 @@ namespace Server.Interfaces
 {
     public interface IRequest
     {
-        void SendResponce(NetworkStream stream);
+        string RequestString { get; }
+        
+        IResponce GetErrorResponce(int errorCode);
+        IResponce GetResponce();
     }
 }
