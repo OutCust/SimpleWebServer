@@ -2,8 +2,10 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Ninject;
 using NLog;
 using Server.Core.Components;
+using Server.Core.DI;
 using Server.Interfaces;
 
 namespace Server.Core
@@ -12,13 +14,21 @@ namespace Server.Core
     {
         private readonly string _sitePath;
         private readonly Logger _logger = LogManager.GetLogger("Server");
-        private readonly IRequestBuilder _requestBuilder = new RequestBuilder();
-
+        
+        private readonly IKernel _kernel;
         private TcpListener _listner;
 
         public Server(string sitePath)
         {
             _sitePath = sitePath;
+            _kernel = new StandardKernel();
+
+            LoadModules(_kernel);
+        }
+
+        private void LoadModules(IKernel kernel)
+        {
+            kernel.Load<ServerModule>();
         }
 
         public void Start(int port)
@@ -29,7 +39,7 @@ namespace Server.Core
             {
                 ThreadPool.QueueUserWorkItem(stateInfo =>
                 {
-                    var uc = new UserClient(_requestBuilder);
+                    var uc = _kernel.Get<IUserClient>();
                     uc.ProcessRequest(stateInfo as TcpClient, _sitePath);
                 }, _listner.AcceptTcpClient());
             }

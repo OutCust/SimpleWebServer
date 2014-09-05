@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -45,9 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\ContentTypeSource.cs" />
+    <Compile Include="Components\IContentTypeSource.cs" />
     <Compile Include="Components\IRequestBuilder.cs" />
-    <Compile Include="Components\IRequestParser.cs" />
+    <Compile Include="Components\IRequestDataSource.cs" />
     <Compile Include="Components\RequestDataSource.cs" />
+    <Compile Include="DI\ServerModule.cs" />
+    <Compile Include="IUserClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="RequestBuilder.cs" />

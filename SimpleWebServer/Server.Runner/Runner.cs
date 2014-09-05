@@ -10,6 +10,10 @@ namespace Server.Runner
     {
         static void Main(string[] args)
         {
+            using (var server = new Core.Server("./"))
+            {
+                server.Start(12345);
+            }
         }
     }
 }

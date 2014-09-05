@@ -2,8 +2,9 @@
 
 namespace Server.Core.Components
 {
-    public interface IRequestParser
+    public interface IRequestDataSource
     {
+        void SetRequestString(string requestString);
         string GetRequestType();
         NameValueCollection ExtractPostData();
         NameValueCollection ExtractGetData();

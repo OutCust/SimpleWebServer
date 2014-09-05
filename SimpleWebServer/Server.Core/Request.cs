@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using Server.Core.Components;
 using Server.Core.Responces;
 using Server.Interfaces;
 
@@ -11,6 +12,13 @@ namespace Server.Core
 {
     public class Request : IRequest
     {
+        private readonly IContentTypeSource _contentTypeSource;
+
+        public Request(IContentTypeSource contentTypeSource)
+        {
+            _contentTypeSource = contentTypeSource;
+        }
+
         public string RequestString { get; set; }
 
         public string RequestType { get; set; }
@@ -41,7 +49,7 @@ namespace Server.Core
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
             var filePath = Path.Combine(appPath, SitePath, RequestUri);
 
-            var isFilePath = !GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
+            var isFilePath = !_contentTypeSource.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
             if (isFilePath)
             {
                 return new FileResponce(filePath);
@@ -49,24 +57,6 @@ namespace Server.Core
             return new PageResponce(null);
         }
 
-        public static string GetContentTypeByExtension(string extension)
-        {
-            var dict = new Dictionary<string, string>
-            {
-                {".htm", "text/html"},
-                {".html", "text/html"},
-                {".css", "text/stylesheet"},
-                {".js", "text/javascript"},
-                {".jpg", "image/jpeg"},
-                {".jpeg", "image/jpeg"},
-                {".png", "image/png"},
-                {".ico", "image/ico"},
-                {".gif", "image/gif"}
-            };
-            string result;
-            dict.TryGetValue(extension, out result);
-            return string.IsNullOrEmpty(result) ? "application/unknown" : result;
-        }
 
     }
 }

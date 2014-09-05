@@ -9,33 +9,38 @@ namespace Server.Core
 {
     public class RequestBuilder : IRequestBuilder
     {
-        
+        private readonly IRequestDataSource _requestDataSource;
+
+        public RequestBuilder(IRequestDataSource requestDataSource)
+        {
+            _requestDataSource = requestDataSource;
+        }
+
         private const int BufferLength = 2048;
 
         public IRequest BuildRequest(NetworkStream stream)
         {
 
             var requestString = GetRequestString(stream);
-
-            var requestDataSource = new RequestDataSource(requestString);
-            var requestType = requestDataSource.GetRequestType();
+            _requestDataSource.SetRequestString(requestString);
+            var requestType = _requestDataSource.GetRequestType();
 
             NameValueCollection requestData;
             switch (requestType)
             {
                 case "POST":
-                    requestData = requestDataSource.ExtractPostData();
+                    requestData = _requestDataSource.ExtractPostData();
                     break;
                 case "GET":
-                    requestData = requestDataSource.ExtractGetData();
+                    requestData = _requestDataSource.ExtractGetData();
                     break;
                 default:
                     throw new Exception("can't get request type");
             }
 
-            var requestUri = requestDataSource.GetRequestUri();
+            var requestUri = _requestDataSource.GetRequestUri();
 
-            var request = new Request
+            var request = new Request(new ContentTypeSource())
             {
                 RequestString = requestString,
                 RequestType = requestType,

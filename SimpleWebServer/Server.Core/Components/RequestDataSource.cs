@@ -6,18 +6,16 @@ using System.Web;
 
 namespace Server.Core.Components
 {
-    public class RequestDataSource : IRequestParser
+    public class RequestDataSource : IRequestDataSource
     {
-        private readonly string[] _splittedRequest;
-        private readonly string _requestString;
+        private string[] _splittedRequest;
+        private string _requestString;
 
-        public RequestDataSource(string requestString)
+        public void SetRequestString(string requestString)
         {
             _requestString = requestString;
             _splittedRequest = requestString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
         }
-
-
 
         public string GetRequestType()
         {

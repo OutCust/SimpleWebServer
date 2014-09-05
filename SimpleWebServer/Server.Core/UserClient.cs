@@ -4,7 +4,7 @@ using Server.Interfaces;
 
 namespace Server.Core
 {
-    public class UserClient
+    public class UserClient : IUserClient
     {
         private readonly IRequestBuilder _builder;
 
