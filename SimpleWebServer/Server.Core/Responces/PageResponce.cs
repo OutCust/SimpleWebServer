@@ -11,9 +11,9 @@ namespace Server.Core.Responces
             _page = page;
         }
 
-        public override void Process()
+        public override void Process(IRequest request)
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Server.Core.Components
 {
-    public class ContentTypeSource : IContentTypeSource
+    public class ContentTypeDefiner : IContentTypeDefiner
     {
-        public ContentTypeSource()
+        public ContentTypeDefiner()
         {
             _contentTypes = new Dictionary<string, string>
             {

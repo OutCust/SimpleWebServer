@@ -13,7 +13,7 @@ namespace Server.Core.Responces
             stream.Flush();
         }
 
-        public virtual void Process()
+        public virtual void Process(IRequest request)
         {
             //нинче не делаем
         }

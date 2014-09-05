@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Net;
-using System.Text;
 using Server.Core.Components;
-using Server.Core.Responces;
 using Server.Interfaces;
 
 namespace Server.Core
 {
     public class Request : IRequest
     {
-        private readonly IContentTypeSource _contentTypeSource;
+        private readonly IResponceFactory _responceFactory;
 
-        public Request(IContentTypeSource contentTypeSource)
+        public Request(IResponceFactory responceFactory)
         {
-            _contentTypeSource = contentTypeSource;
+            _responceFactory = responceFactory;
         }
 
         public string RequestString { get; set; }
@@ -31,17 +27,7 @@ namespace Server.Core
 
         public IResponce GetErrorResponce(int errorCode)
         {
-            var responceBody = string.Format("<html><body><h1> {0} {1} </h1></body></html>", errorCode, ((HttpStatusCode)errorCode));
-            var responceString = String.Format("HTTP/1.1 {0} {1} \nContent-type: text/html\nContent-Length: {2} \n\n {3}",
-                                            errorCode,
-                                            ((HttpStatusCode)errorCode),
-                                            responceBody.Length,
-                                            responceBody);
-            var responce = new ResponceBase
-            {
-                ResponceData = Encoding.ASCII.GetBytes(responceString)
-            };
-            return responce;
+            return _responceFactory.CreateErrorResponce(errorCode);
         }
 
         public IResponce GetResponce()
@@ -49,12 +35,7 @@ namespace Server.Core
             var appPath = AppDomain.CurrentDomain.BaseDirectory;
             var filePath = Path.Combine(appPath, SitePath, RequestUri);
 
-            var isFilePath = !_contentTypeSource.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
-            if (isFilePath)
-            {
-                return new FileResponce(filePath);
-            }
-            return new PageResponce(null);
+            return _responceFactory.CreateResponce(appPath, filePath);
         }
 
 

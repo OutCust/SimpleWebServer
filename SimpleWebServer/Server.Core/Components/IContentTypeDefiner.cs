@@ -1,6 +1,6 @@
 ﻿namespace Server.Core.Components
 {
-    public interface IContentTypeSource
+    public interface IContentTypeDefiner
     {
         string GetContentTypeByExtension(string extension);
     }

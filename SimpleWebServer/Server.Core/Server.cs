@@ -6,6 +6,8 @@ using Ninject;
 using NLog;
 using Server.Core.Components;
 using Server.Core.DI;
+using Ninject.Extensions.Conventions;
+
 using Server.Interfaces;
 
 namespace Server.Core
@@ -29,6 +31,9 @@ namespace Server.Core
         private void LoadModules(IKernel kernel)
         {
             kernel.Load<ServerModule>();
+            kernel.Bind(x => x.FromAssembliesInPath(_sitePath)
+                .SelectAllClasses().InheritedFrom<IPage>()
+                .BindAllInterfaces());
         }
 
         public void Start(int port)

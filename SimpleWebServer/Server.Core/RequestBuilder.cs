@@ -10,10 +10,12 @@ namespace Server.Core
     public class RequestBuilder : IRequestBuilder
     {
         private readonly IRequestDataSource _requestDataSource;
+        private readonly IResponceFactory _responceFactory;
 
-        public RequestBuilder(IRequestDataSource requestDataSource)
+        public RequestBuilder(IRequestDataSource requestDataSource, IResponceFactory responceFactory)
         {
             _requestDataSource = requestDataSource;
+            _responceFactory = responceFactory;
         }
 
         private const int BufferLength = 2048;
@@ -40,7 +42,7 @@ namespace Server.Core
 
             var requestUri = _requestDataSource.GetRequestUri();
 
-            var request = new Request(new ContentTypeSource())
+            var request = new Request(_responceFactory)
             {
                 RequestString = requestString,
                 RequestType = requestType,

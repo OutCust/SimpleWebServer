@@ -10,6 +10,8 @@ namespace Server.Core.DI
             Bind<IUserClient>().To<UserClient>();
             Bind<IRequestBuilder>().To<RequestBuilder>();
             Bind<IRequestDataSource>().To<RequestDataSource>();
+            Bind<IContentTypeDefiner>().To<ContentTypeDefiner>().InSingletonScope();
+            Bind<IResponceFactory>().To<ResponceFactory>().InSingletonScope();
         }
     }
 }

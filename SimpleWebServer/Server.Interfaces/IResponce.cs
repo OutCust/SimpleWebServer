@@ -6,6 +6,6 @@ namespace Server.Interfaces
     {
         void Send(NetworkStream stream);
 
-        void Process();
+        void Process(IRequest request);
     }
 }

@@ -35,6 +35,9 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Extensions.Conventions">
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -48,11 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ContentTypeSource.cs" />
-    <Compile Include="Components\IContentTypeSource.cs" />
+    <Compile Include="Components\ContentTypeDefiner.cs" />
+    <Compile Include="Components\IContentTypeDefiner.cs" />
     <Compile Include="Components\IRequestBuilder.cs" />
     <Compile Include="Components\IRequestDataSource.cs" />
+    <Compile Include="Components\IResponceFactory.cs" />
     <Compile Include="Components\RequestDataSource.cs" />
+    <Compile Include="Components\ResponceFactory.cs" />
     <Compile Include="DI\ServerModule.cs" />
     <Compile Include="IUserClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -23,7 +23,7 @@ namespace Server.Core
                     ? request.GetErrorResponce(500) 
                     : request.GetResponce();
 
-                responce.Process();
+                responce.Process(request);
                 
                 responce.Send(stream);
             }

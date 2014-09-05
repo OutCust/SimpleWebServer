@@ -1,6 +1,6 @@
 ﻿namespace Server.Interfaces
 {
-    public abstract class BasePage : IPage
+    public class BasePage : IPage
     {
         public virtual string ProcessRequest(IRequest request, string text)
         {
