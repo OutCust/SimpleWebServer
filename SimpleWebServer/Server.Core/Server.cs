@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Threading;
 using Ninject;
 using NLog;
-using Server.Core.Components;
 using Server.Core.DI;
 using Ninject.Extensions.Conventions;
 
@@ -35,13 +34,11 @@ namespace Server.Core
         {
             kernel.Load<ServerModule>();
 
-            var sitePath = Path.GetFullPath(_settings.SitePath);
-
             kernel.Bind(x => x.FromAssembliesInPath(_settings.SitePath)
                 .SelectAllClasses().InheritedFrom<IPage>()
                 .BindAllInterfaces());
 
-            var pages = _kernel.GetAll<IPage>();
+            var pages = kernel.GetAll<IPage>();
         }
 
         public void Start()
