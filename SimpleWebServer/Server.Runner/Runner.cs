@@ -10,7 +10,7 @@ namespace Server.Runner
     {
         static void Main(string[] args)
         {
-            using (var server = new Core.Server("./"))
+            using (var server = new Core.Server("./Site"))
             {
                 server.Start(12345);
             }
