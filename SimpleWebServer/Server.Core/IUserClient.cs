@@ -4,6 +4,6 @@ namespace Server.Core
 {
     public interface IUserClient
     {
-        void ProcessRequest(TcpClient tcpClient, string sitePath);
+        void ProcessRequest(TcpClient tcpClient);
     }
 }

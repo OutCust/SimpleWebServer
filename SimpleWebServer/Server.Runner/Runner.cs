@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Core;
 
 namespace Server.Runner
 {
@@ -10,9 +11,15 @@ namespace Server.Runner
     {
         static void Main(string[] args)
         {
-            using (var server = new Core.Server("./Site"))
+            var settings = new ServerSettings
             {
-                server.Start(12345);
+                PortNumber = 12345,
+                SitePath = "./Site"
+            };
+
+            using (var server = new Core.Server(settings))
+            {
+                server.Start();
             }
         }
     }

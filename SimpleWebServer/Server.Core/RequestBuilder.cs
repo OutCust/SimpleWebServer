@@ -9,11 +9,13 @@ namespace Server.Core
 {
     public class RequestBuilder : IRequestBuilder
     {
+        private readonly ServerSettings _settings;
         private readonly IRequestDataSource _requestDataSource;
         private readonly IResponceFactory _responceFactory;
 
-        public RequestBuilder(IRequestDataSource requestDataSource, IResponceFactory responceFactory)
+        public RequestBuilder(ServerSettings settings, IRequestDataSource requestDataSource, IResponceFactory responceFactory)
         {
+            _settings = settings;
             _requestDataSource = requestDataSource;
             _responceFactory = responceFactory;
         }
@@ -46,6 +48,7 @@ namespace Server.Core
             {
                 RequestString = requestString,
                 RequestType = requestType,
+                SitePath = _settings.SitePath,
                 RequestData = requestData,
                 RequestUri = requestUri
             };

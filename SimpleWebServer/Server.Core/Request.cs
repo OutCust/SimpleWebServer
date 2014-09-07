@@ -32,8 +32,8 @@ namespace Server.Core
 
         public IResponce GetResponce()
         {
-            var appPath = AppDomain.CurrentDomain.BaseDirectory;
-            var filePath = Path.Combine(appPath, SitePath, RequestUri);
+            var appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SitePath);
+            var filePath = Path.GetFullPath(Path.Combine(appPath, RequestUri));
 
             return _responceFactory.CreateResponce(appPath, filePath);
         }

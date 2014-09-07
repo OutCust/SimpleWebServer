@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -14,38 +15,45 @@ namespace Server.Core
 {
     public class Server : IDisposable
     {
-        private readonly string _sitePath;
+        private readonly ServerSettings _settings;
         private readonly Logger _logger = LogManager.GetLogger("Server");
         
         private readonly IKernel _kernel;
         private TcpListener _listner;
 
-        public Server(string sitePath)
+        public Server(ServerSettings settings)
         {
-            _sitePath = sitePath;
+            _settings = settings;
             _kernel = new StandardKernel();
 
             LoadModules(_kernel);
+
+            _kernel.Bind<ServerSettings>().ToConstant(settings);
         }
 
         private void LoadModules(IKernel kernel)
         {
             kernel.Load<ServerModule>();
-            kernel.Bind(x => x.FromAssembliesInPath(_sitePath)
+
+            var sitePath = Path.GetFullPath(_settings.SitePath);
+
+            kernel.Bind(x => x.FromAssembliesInPath(_settings.SitePath)
                 .SelectAllClasses().InheritedFrom<IPage>()
                 .BindAllInterfaces());
+
+            var pages = _kernel.GetAll<IPage>();
         }
 
-        public void Start(int port)
+        public void Start()
         {
-            _listner = new TcpListener(IPAddress.Any, port);
+            _listner = new TcpListener(IPAddress.Any, _settings.PortNumber);
             _listner.Start();
             while (true)
             {
                 ThreadPool.QueueUserWorkItem(stateInfo =>
                 {
                     var uc = _kernel.Get<IUserClient>();
-                    uc.ProcessRequest(stateInfo as TcpClient, _sitePath);
+                    uc.ProcessRequest(stateInfo as TcpClient);
                 }, _listner.AcceptTcpClient());
             }
         }

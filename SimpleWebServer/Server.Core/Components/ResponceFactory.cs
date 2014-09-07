@@ -22,19 +22,41 @@ namespace Server.Core.Components
 
         public IResponce CreateResponce(string appPath, string filePath)
         {
-            var isTextContent = !_contentTypeDefiner.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
+            if (!File.Exists(filePath))
+            {
+                return CreateErrorResponce(404);
+            }
+
+            var isTextContent = _contentTypeDefiner.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
             if (isTextContent)
             {
-                IPage page = TryGetPage(filePath);
+                IPage page = TryGetPage(appPath, filePath);
 
-                return page != null ? new PageResponce(page) : new ResponceBase();
+                if (page != null)
+                {
+                    return new PageResponce(page, _contentTypeDefiner);
+                }
+                var data = File.ReadAllBytes(filePath);
+                return new ResponceBase
+                {
+                    ResponceData = data
+                };
             }
             return new FileResponce(filePath, _contentTypeDefiner);
         }
 
-        private IPage TryGetPage(string filePath)
+        private IPage TryGetPage(string appPath, string filePath)
         {
-            return _registredPages.FirstOrDefault(c => c.Path.Equals(filePath));
+
+            foreach (var registredPage in _registredPages)
+            {
+                var pagePath = Path.GetFullPath(Path.Combine(appPath, registredPage.Path));
+                if (pagePath.Equals(filePath))
+                {
+                    return registredPage;
+                }
+            }
+            return null;
         }
 
         public IResponce CreateErrorResponce(int errorCode)

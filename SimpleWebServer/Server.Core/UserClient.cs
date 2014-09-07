@@ -13,7 +13,7 @@ namespace Server.Core
             _builder = builder;
         }
 
-        public void ProcessRequest(TcpClient tcpClient, string sitePath)
+        public void ProcessRequest(TcpClient tcpClient)
         {
             using (var stream = tcpClient.GetStream())
             {

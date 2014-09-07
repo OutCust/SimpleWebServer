@@ -19,7 +19,7 @@ namespace Server.Core.Components
 
         public string GetRequestType()
         {
-            var rt = _splittedRequest.First();
+            var rt = _splittedRequest.FirstOrDefault();
             return rt.Substring(0, rt.IndexOf(" ", StringComparison.Ordinal)).ToUpperInvariant();
         }
 

@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePage.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="IRequest.cs" />
     <Compile Include="IResponce.cs" />

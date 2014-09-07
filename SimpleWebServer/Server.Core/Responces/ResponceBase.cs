@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 using Server.Interfaces;
 
 namespace Server.Core.Responces
@@ -11,6 +12,12 @@ namespace Server.Core.Responces
         {
             stream.Write(ResponceData, 0, ResponceData.Length);
             stream.Flush();
+        }
+
+        public void Redirect(string url)
+        {
+            var resp = string.Format("HTTP/1.1 302 Found \nLocation: {0} \n\n", url);
+            ResponceData = Encoding.ASCII.GetBytes(resp);
         }
 
         public virtual void Process(IRequest request)

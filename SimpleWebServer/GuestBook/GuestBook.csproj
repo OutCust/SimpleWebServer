@@ -39,16 +39,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\HelloWorld.cs" />
+    <Compile Include="Pages\IndexPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Pages\HelloWorld.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Pages\Index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Interfaces\Server.Interfaces.csproj">
+      <Project>{BEA9E2A2-19E3-417B-A108-E2ADBFC99C82}</Project>
+      <Name>Server.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)" "$(SolutionDir)Server.Runner\bin\Debug\Site" /Y /E /D1</PostBuildEvent>
+    <PostBuildEvent>robocopy $(TargetDir) $(SolutionDir)Server.Runner\bin\Debug\Site /E /XC /XN /XO
+set rce=%25errorlevel%25
+if not %25rce%25 LEQ 4 exit %25rce%25 else exit 0</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

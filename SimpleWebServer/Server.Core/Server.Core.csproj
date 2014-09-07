@@ -67,6 +67,7 @@
     <Compile Include="Responces\FileResponce.cs" />
     <Compile Include="Responces\PageResponce.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="ServerSettings.cs" />
     <Compile Include="UserClient.cs" />
   </ItemGroup>
   <ItemGroup>
