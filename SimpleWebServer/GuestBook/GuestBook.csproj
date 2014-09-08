@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigLoader.cs" />
+    <Compile Include="GuestBookConfig.cs" />
     <Compile Include="GuestBook\GuestBook.cs" />
     <Compile Include="NinjectServiceLocator.cs" />
     <Compile Include="Pages\HelloWorld.cs" />
@@ -54,6 +56,9 @@
     <Compile Include="SiteInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GuestBookConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="GuestBook\GuestBook.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -82,7 +87,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

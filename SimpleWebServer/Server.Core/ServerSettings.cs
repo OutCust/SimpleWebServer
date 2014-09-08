@@ -1,9 +1,28 @@
-﻿namespace Server.Core
+﻿using System.Configuration;
+
+namespace Server.Core
 {
-    public class ServerSettings
+    public class ServerSettings : ConfigurationSection
     {
-       public int PortNumber { get; set; }
-       public string SitePath { get; set; }
-        public string SiteConfigPath { get; set; }
+        [ConfigurationProperty("PortNumber")]
+        public int PortNumber
+        {
+            get { return (int)(this["PortNumber"]); }
+            set { base["PortNumber"] = value; }
+        }
+
+        [ConfigurationProperty("SitePath")]
+        public string SitePath
+        {
+            get { return (string)(this["SitePath"]); }
+            set { base["SitePath"] = value; }
+        }
+
+        [ConfigurationProperty("SiteConfigPath")]
+        public string SiteConfigPath
+        {
+            get { return (string)(this["SiteConfigPath"]); }
+            set { base["SiteConfigPath"] = value; }
+        }
     }
 }

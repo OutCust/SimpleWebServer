@@ -48,7 +48,7 @@ namespace Server.Core
         {
             _listner = new TcpListener(IPAddress.Any, _settings.PortNumber);
 
-            _kernel.GetAll<ISiteInitializer>().First().Initialize();
+            _kernel.GetAll<ISiteInitializer>().First().Initialize(_settings.SiteConfigPath);
 
             _listner.Start();
             while (true)

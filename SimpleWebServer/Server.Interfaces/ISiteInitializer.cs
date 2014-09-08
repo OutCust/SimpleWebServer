@@ -2,6 +2,6 @@
 {
     public interface ISiteInitializer
     {
-        void Initialize();
+        void Initialize(string siteConfigPath);
     }
 }
