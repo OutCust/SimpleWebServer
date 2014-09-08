@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
+using Server.Interfaces;
 
-namespace Server.Interfaces
+namespace GuestBook.Pages
 {
     public class HelloWorld : IPage
     {
-        public string ProcessRequest(IRequest request, string text)
+        public string Process(IResponce responce, string text)
         {
             return String.Format(text, "Hello World");
         }

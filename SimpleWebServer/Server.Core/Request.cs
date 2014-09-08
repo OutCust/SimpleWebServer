@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net.Sockets;
 using Server.Core.Components;
 using Server.Interfaces;
 
@@ -10,7 +11,7 @@ namespace Server.Core
     {
         private readonly IResponceFactory _responceFactory;
 
-        public Request(IResponceFactory responceFactory)
+        public Request(IResponceFactory responceFactory, NetworkStream stream)
         {
             _responceFactory = responceFactory;
         }
@@ -24,20 +25,19 @@ namespace Server.Core
         public string RequestUri { get; set; }
 
         public string SitePath { get; set; }
+        public NetworkStream RequestStream { get; set; }
 
         public IResponce GetErrorResponce(int errorCode)
         {
-            return _responceFactory.CreateErrorResponce(errorCode);
+            return _responceFactory.CreateErrorResponce(errorCode, this);
         }
-
         public IResponce GetResponce()
         {
             var appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SitePath);
             var filePath = Path.GetFullPath(Path.Combine(appPath, RequestUri));
 
-            return _responceFactory.CreateResponce(appPath, filePath);
+            return _responceFactory.CreateResponce(appPath, filePath, this);
         }
-
 
     }
 }

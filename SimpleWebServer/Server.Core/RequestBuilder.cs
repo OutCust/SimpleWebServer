@@ -44,13 +44,14 @@ namespace Server.Core
 
             var requestUri = _requestDataSource.GetRequestUri();
 
-            var request = new Request(_responceFactory)
+            var request = new Request(_responceFactory, stream)
             {
                 RequestString = requestString,
                 RequestType = requestType,
                 SitePath = _settings.SitePath,
                 RequestData = requestData,
-                RequestUri = requestUri
+                RequestUri = requestUri,
+                RequestStream = stream,
             };
             return request;
         }

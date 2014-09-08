@@ -6,9 +6,9 @@ namespace GuestBook.Proxy
 {
     public class Proxy :  IPage
     {
-        public string ProcessRequest(IRequest request, string text)
+        public string Process(IResponce responce, string text)
         {
-            var parameters = request.RequestData;
+            var parameters = responce.Request.RequestData;
 
             var proxyUrl = parameters["url"];
 
@@ -17,7 +17,6 @@ namespace GuestBook.Proxy
             var uriBuilder = new UriBuilder(proxyUrl);
             return webClient.DownloadString(uriBuilder.Uri);
         }
-
         public string Path { get { return "./Proxy/index.html"; } }
     }
 }

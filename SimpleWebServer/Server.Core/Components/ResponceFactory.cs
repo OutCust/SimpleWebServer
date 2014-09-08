@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using JetBrains.Annotations;
 using Server.Core.Responces;
 using Server.Interfaces;
 
@@ -20,29 +22,29 @@ namespace Server.Core.Components
             _registredPages = registredPages;
         }
 
-        public IResponce CreateResponce(string appPath, string filePath)
+        public IResponce CreateResponce(string appPath, string filePath,  IRequest request)
         {
-            if (!File.Exists(filePath))
+            IPage page = TryGetPage(appPath, filePath);
+
+            if (page == null && !File.Exists(filePath))
             {
-                return CreateErrorResponce(404);
+                return CreateErrorResponce(404, request);
             }
 
             var isTextContent = _contentTypeDefiner.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
             if (isTextContent)
             {
-                IPage page = TryGetPage(appPath, filePath);
-
                 if (page != null)
                 {
-                    return new PageResponce(page, _contentTypeDefiner);
+                    return new PageResponce(page, request, _contentTypeDefiner);
                 }
                 var data = File.ReadAllBytes(filePath);
-                return new ResponceBase
+                return new ResponceBase(request)
                 {
                     ResponceData = data
                 };
             }
-            return new FileResponce(filePath, _contentTypeDefiner);
+            return new FileResponce(filePath, _contentTypeDefiner, request);
         }
 
         private IPage TryGetPage(string appPath, string filePath)
@@ -51,7 +53,7 @@ namespace Server.Core.Components
             foreach (var registredPage in _registredPages)
             {
                 var pagePath = Path.GetFullPath(Path.Combine(appPath, registredPage.Path));
-                if (pagePath.Equals(filePath))
+                if (pagePath.Equals(filePath, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return registredPage;
                 }
@@ -59,7 +61,7 @@ namespace Server.Core.Components
             return null;
         }
 
-        public IResponce CreateErrorResponce(int errorCode)
+        public IResponce CreateErrorResponce(int errorCode, IRequest request)
         {
             var responceBody = string.Format("<html><body><h1> {0} {1} </h1></body></html>", errorCode, ((HttpStatusCode)errorCode));
             var responceString = String.Format("HTTP/1.1 {0} {1} \nContent-type: text/html\nContent-Length: {2} \n\n {3}",
@@ -67,7 +69,7 @@ namespace Server.Core.Components
                                             ((HttpStatusCode)errorCode),
                                             responceBody.Length,
                                             responceBody);
-            var responce = new ResponceBase
+            var responce = new ResponceBase(request)
             {
                 ResponceData = Encoding.ASCII.GetBytes(responceString)
             };

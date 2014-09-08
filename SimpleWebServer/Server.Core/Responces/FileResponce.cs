@@ -11,13 +11,14 @@ namespace Server.Core.Responces
         private readonly string _filePath;
         private readonly IContentTypeDefiner _contentTypeDefiner;
 
-        public FileResponce(string filePath, IContentTypeDefiner contentTypeDefiner)
+        public FileResponce(string filePath, IContentTypeDefiner contentTypeDefiner, IRequest request)
+            : base(request)
         {
             _filePath = filePath;
             _contentTypeDefiner = contentTypeDefiner;
         }
 
-        public override void Process(IRequest request)
+        public override void Process()
         {
             var extension = Path.GetExtension(_filePath);
                 

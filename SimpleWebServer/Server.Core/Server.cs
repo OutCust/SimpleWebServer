@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -38,12 +39,17 @@ namespace Server.Core
                 .SelectAllClasses().InheritedFrom<IPage>()
                 .BindAllInterfaces());
 
-            var pages = kernel.GetAll<IPage>();
+            kernel.Bind(x => x.FromAssembliesInPath(_settings.SitePath)
+                .SelectAllClasses().InheritedFrom<ISiteInitializer>()
+                .BindAllInterfaces());
         }
 
         public void Start()
         {
             _listner = new TcpListener(IPAddress.Any, _settings.PortNumber);
+
+            _kernel.GetAll<ISiteInitializer>().First().Initialize();
+
             _listner.Start();
             while (true)
             {

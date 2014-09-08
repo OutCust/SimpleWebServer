@@ -4,7 +4,7 @@ namespace Server.Interfaces
 {
     public interface IPage
     {
-        string ProcessRequest(IRequest request, string text);
+        string Process(IResponce responce, string text);
 
         string Path { get; }
     }

@@ -4,8 +4,10 @@ namespace Server.Interfaces
 {
     public interface IResponce
     {
-        void Send(NetworkStream stream);
-
-        void Process(IRequest request);
+        byte[] ResponceData { get; set; }
+        IRequest Request { get; }
+        void Send();
+        void Process();
+        void Redirect(string url);
     }
 }

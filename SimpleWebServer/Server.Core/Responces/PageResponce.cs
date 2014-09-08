@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Net.Sockets;
 using System.Text;
 using Server.Core.Components;
 using Server.Interfaces;
@@ -10,18 +11,23 @@ namespace Server.Core.Responces
         private readonly IPage _page;
         private readonly IContentTypeDefiner _contentTypeDefiner;
 
-        public PageResponce(IPage page, IContentTypeDefiner contentTypeDefiner)
+        public PageResponce(IPage page, IRequest request, IContentTypeDefiner contentTypeDefiner)
+            : base(request)
         {
             _page = page;
             _contentTypeDefiner = contentTypeDefiner;
         }
 
-        public override void Process(IRequest request)
+        public override void Process()
         {
-
-            var path = Path.GetFullPath(Path.Combine(request.SitePath, _page.Path));
+            var path = Path.GetFullPath(Path.Combine(Request.SitePath, _page.Path));
             var file = File.ReadAllText(path);
-            string processedPage = _page.ProcessRequest(request, file);
+
+            string processedPage = _page.Process(this, file);
+            if (IsRedirect)
+            {
+                return;
+            }
             
             var headers = string.Format("HTTP/1.1 200 OK\nContent-Type: {0}\nContent-Length: {1}\n\n",
                             _contentTypeDefiner.GetContentTypeByExtension(Path.GetExtension(path)),
