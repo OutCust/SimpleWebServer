@@ -40,5 +40,9 @@ namespace Server.Core
             return _responceFactory.CreateResponce(appPath, filePath, this);
         }
 
+        public override string ToString()
+        {
+            return string.Format("RequestType:{0} RequestUri:{1}", RequestType, RequestUri);
+        }
     }
 }

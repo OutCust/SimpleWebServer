@@ -56,6 +56,7 @@ namespace Server.Core
                 ThreadPool.QueueUserWorkItem(stateInfo =>
                 {
                     var uc = _kernel.Get<IUserClient>();
+                    _logger.Debug("Start process request from User");
                     uc.ProcessRequest(stateInfo as TcpClient);
                 }, _listner.AcceptTcpClient());
             }
