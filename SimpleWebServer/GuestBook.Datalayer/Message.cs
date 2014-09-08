@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Xml.Serialization;
 
 namespace GuestBook.Datalayer
@@ -9,10 +11,15 @@ namespace GuestBook.Datalayer
     public class Message
     {
         [Key]
-        public int Id { get; set; }
+        [XmlIgnore]
+        public long Id { get; set; }
 
         [XmlElement("user")]
-        public User User { get; set; }
+        public virtual User User { get; set; }
+        
+        [Column("User_Id")]
+        [XmlIgnore]
+        public long? UserId { get; set; }
 
         [XmlElement("text")]
         public string Text { get; set; }
