@@ -9,7 +9,8 @@ namespace Server.Runner
             var settings = new ServerSettings
             {
                 PortNumber = 12345,
-                SitePath = "./Site"
+                SitePath = "./Site",
+                SiteConfigPath = "siteConfig.xml"
             };
 
             using (var server = new Core.Server(settings))
