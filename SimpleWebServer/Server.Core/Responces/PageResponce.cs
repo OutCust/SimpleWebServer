@@ -34,7 +34,7 @@ namespace Server.Core.Responces
                             processedPage.Length);
 
             byte[] headersBytes = Encoding.ASCII.GetBytes(headers);
-            byte[] pageBytes = Encoding.ASCII.GetBytes(processedPage); 
+            byte[] pageBytes = Encoding.UTF8.GetBytes(processedPage); 
             using (var ms = new MemoryStream())
             {
                 ms.Write(headersBytes, 0, headersBytes.Length);

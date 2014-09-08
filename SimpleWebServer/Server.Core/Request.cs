@@ -14,6 +14,7 @@ namespace Server.Core
         public Request(IResponceFactory responceFactory, NetworkStream stream)
         {
             _responceFactory = responceFactory;
+            RequestStream = stream;
         }
 
         public string RequestString { get; set; }
@@ -25,7 +26,7 @@ namespace Server.Core
         public string RequestUri { get; set; }
 
         public string SitePath { get; set; }
-        public NetworkStream RequestStream { get; set; }
+        public NetworkStream RequestStream { get; private set; }
 
         public IResponce GetErrorResponce(int errorCode)
         {

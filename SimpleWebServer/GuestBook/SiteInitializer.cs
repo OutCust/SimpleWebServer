@@ -11,7 +11,7 @@ namespace GuestBook
             var locator = NinjectServiceLocator.GetInstance();
 
             IKernel kernel = locator.GetKernel();
-            kernel.Bind<IGuestBookRepository>().To<GuestBookXmlRepository>();
+            kernel.Bind<IGuestBookRepository>().To<GuestBookXmlRepository>().WithConstructorArgument("filePath", "./repo.xml");
 
         }
     }

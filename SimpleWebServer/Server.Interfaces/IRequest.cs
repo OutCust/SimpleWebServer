@@ -10,7 +10,7 @@ namespace Server.Interfaces
         NameValueCollection RequestData { get; set; }
         string RequestUri { get; set; }
         string SitePath { get; set; }
-        NetworkStream RequestStream { get; set; }
+        NetworkStream RequestStream { get; }
         IResponce GetErrorResponce(int errorCode);
         IResponce GetResponce();
     }

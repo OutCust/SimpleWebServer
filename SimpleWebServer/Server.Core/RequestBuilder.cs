@@ -24,8 +24,12 @@ namespace Server.Core
 
         public IRequest BuildRequest(NetworkStream stream)
         {
-
             var requestString = GetRequestString(stream);
+            if (String.IsNullOrEmpty(requestString))
+            {
+                return new Request(_responceFactory, stream);
+            }
+
             _requestDataSource.SetRequestString(requestString);
             var requestType = _requestDataSource.GetRequestType();
 
@@ -51,7 +55,6 @@ namespace Server.Core
                 SitePath = _settings.SitePath,
                 RequestData = requestData,
                 RequestUri = requestUri,
-                RequestStream = stream,
             };
             return request;
         }

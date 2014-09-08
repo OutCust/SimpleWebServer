@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
-using JetBrains.Annotations;
 using Server.Core.Responces;
 using Server.Interfaces;
 
@@ -30,26 +27,16 @@ namespace Server.Core.Components
             {
                 return CreateErrorResponce(404, request);
             }
-
-            var isTextContent = _contentTypeDefiner.GetContentTypeByExtension(Path.GetExtension(filePath)).Contains("text");
-            if (isTextContent)
+            if (page != null)
             {
-                if (page != null)
-                {
-                    return new PageResponce(page, request, _contentTypeDefiner);
-                }
-                var data = File.ReadAllBytes(filePath);
-                return new ResponceBase(request)
-                {
-                    ResponceData = data
-                };
+                return new PageResponce(page, request, _contentTypeDefiner);
             }
+
             return new FileResponce(filePath, _contentTypeDefiner, request);
         }
 
         private IPage TryGetPage(string appPath, string filePath)
         {
-
             foreach (var registredPage in _registredPages)
             {
                 var pagePath = Path.GetFullPath(Path.Combine(appPath, registredPage.Path));
@@ -71,7 +58,7 @@ namespace Server.Core.Components
                                             responceBody);
             var responce = new ResponceBase(request)
             {
-                ResponceData = Encoding.ASCII.GetBytes(responceString)
+                ResponceData = Encoding.UTF8.GetBytes(responceString)
             };
             return responce;
         }
