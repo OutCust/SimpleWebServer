@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using Server.Core.Components;
 using Server.Interfaces;
 
@@ -23,7 +24,14 @@ namespace Server.Core
                     ? request.GetErrorResponce(500) 
                     : request.GetResponce();
 
-                responce.Process();
+                try
+                {
+                    responce.Process();
+                }
+                catch (Exception exc)
+                {
+                    responce = request.GetErrorResponce(500);
+                }
 
                 responce.Send();
             }

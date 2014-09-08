@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
 namespace GuestBook.Datalayer
@@ -7,6 +8,9 @@ namespace GuestBook.Datalayer
     [XmlRoot("Message")]
     public class Message
     {
+        [Key]
+        public int Id { get; set; }
+
         [XmlElement("user")]
         public User User { get; set; }
 
